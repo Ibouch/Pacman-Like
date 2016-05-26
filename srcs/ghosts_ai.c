@@ -12,58 +12,59 @@
 
 #include <ft_pacman.h>
 
-void	determine_possibility(t_map *m, int *x, int *y)
+static void	check_reverse(t_map *m, int *x, int *y, int i)
 {
-	int	max_y;
-	int	max_x;
-
-	max_y = (m->nb_line - 1);
-	max_x = (m->nb_char - 2);
-	if (m->map[*y][*x] == '#')
+	if (*x < 0 || *x > (m->nb_char - 2))
 	{
-		fprintf(stderr, "IMPOSSSIBLE\n");}
+		if (*x < 0 && m->map[*y][(m->nb_char - 2)] != '#')
+			*x = (m->nb_char - 2);
+		else if (*x > (m->nb_char - 2) && m->map[*y][0] != '#')
+			*x = 0;
+		else
+			*x = m->ghost.x[i];
+	}
+	if (*y < 0 || *y > (m->nb_line - 1))
+	{
+		if (*y < 0 && m->map[(m->nb_line - 1)][*x] != '#')
+			*y = (m->nb_line - 1);
+		else if (*y > (m->nb_line - 1) && m->map[0][*x] != '#')
+			*y = 0;
+		else
+			*y = m->ghost.y[i];
+	}
 }
 
-int	ghosts_ai(t_map *m)
+static void	debug(int *x, int *y)
+{
+	int	rand_x;
+	int	rand_y;
+
+	rand_x = 0;
+	rand_y = 0;
+	while (rand_x + rand_y != (-1) && rand_x + rand_y != 1)
+	{
+		rand_x = (arc4random() % 3) - 1;
+		rand_y = (arc4random() % 3) - 1;
+	}
+	*x += rand_x;
+	*y += rand_y;
+}
+
+int			ghosts_ai(t_map *m)
 {
 	int	i;
-	int	x[NB_GHOSTS];
-	int	y[NB_GHOSTS];
+	int	x;
+	int	y;
 
 	i = (-1);
 	while (++i < NB_GHOSTS)
 	{
-		x[i] = m->ghost.x[i];
-		y[i] = m->ghost.y[i];
-		while (m->map[y[i]][x[i]] == 'M' || m->map[y[i]][x[i]] == '#')
-		{
-			x[i] = m->ghost.x[i];
-			y[i] = m->ghost.y[i];
-			x[i] += (arc4random() % 3) - 1;
-			y[i] += (arc4random() % 3) - 1;
-			tputs(tgoto(tgetstr("cm", NULL), 0, m->nb_line + 5), 1, myputc);
-			fprintf(stderr, "new x: %d new y: %d\n", x[i], y[i]);
-		}
-		/*
-		x[i] = m->ghost.x[i];
-		y[i] = m->ghost.y[i];
-		if (m->pacman.y >= m->ghost.y[i])
-		{
-			if (m->pacman.y == m->ghost.y[i])
-			{
-				if (m->pacman.x == m->ghost.x[i])
-					return (-1);
-				x[i] = ((m->pacman.x > m->ghost.x[i]) ? ++x[i] : --x[i]);
-			}
-			else
-			{
-				++y[i];
-				//determine_possibility(m, &(x[i]), &(y[i]));
-			}
-		}
-		else
-			--y[i];
-		*/
+		x = m->ghost.x[i];
+		y = m->ghost.y[i];
+		debug(&x, &y);
+		check_reverse(m, &x, &y, i);
+		if ((move_ghosts(m, x, y, i)) == (-1))
+			return (-1);
 	}
-	return (move_ghosts(m, x, y));
+	return (0);
 }

@@ -78,7 +78,7 @@ static void	print_map_elem(char c, t_bool solid)
 		ft_putchar_fd(c, 2);
 }
 
-void		print_map(t_map *m)
+void		print_map(t_map *m, t_bool opt_s)
 {
 	int	x;
 	int	y;
@@ -91,7 +91,7 @@ void		print_map(t_map *m)
 	{
 		while (m->map[y][x] != '\0')
 		{
-			print_map_elem(m->map[y][x], m->solid);
+			print_map_elem(m->map[y][x], opt_s);
 			++x;
 		}
 		x = 0;

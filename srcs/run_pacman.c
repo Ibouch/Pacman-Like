@@ -52,7 +52,7 @@ void		run_pacman(t_env *e)
 			begin->level = lvl;
 			if ((begin->total_piece = verify_map(begin->content)) == (-1))
 				invalid_map(&(e->term_default));
-			i = create_map(&(e->term_update), begin);
+			i = create_map(e, begin);
 			if ((check_return_value(i)) == (-1))
 				break ;
 			++lvl;

@@ -20,7 +20,7 @@ static struct s_key_event	g_key[4] =
 	{{27, 91, 'D'}, (-1), 0}
 };
 
-int	play_game(t_map *m, int *i_time)
+int	play_game(t_map *m, t_bool fast, int *i_time)
 {
 	char			buf[5];
 	int				i;
@@ -37,7 +37,7 @@ int	play_game(t_map *m, int *i_time)
 			(m->pacman.y + g_key[i].new_y));
 	if (ret == (-1))
 		return (LOST_HP);
-	(ret = ((check_time(i_time)) == 1) ? ghosts_ai(m) : ret);
+	(ret = ((check_time(i_time)) == 1 || fast == TRUE) ? ghosts_ai(m) : ret);
 	if (ret == (-1))
 		return (LOST_HP);
 	if (m->score == (m->total_piece * 5))

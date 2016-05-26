@@ -22,28 +22,19 @@ static void	overwrite_last_pos(t_map *m, int i)
 		ft_putchar_fd(m->ghost.old_char[i], 2);
 }
 
-int			move_ghosts(t_map *m, int x[NB_GHOSTS], int y[NB_GHOSTS])
+int			move_ghosts(t_map *m, int x, int y, int i)
 {
-	int	i;
-
-	i = (-1);
-	while (++i < NB_GHOSTS)
+	if (m->map[y][x] == 'c')
+		return (-1);
+	if (m->map[y][x] != '#' && m->map[y][x] != 'M')
 	{
-		if (m->map[y[i]][x[i]] == 'c')
-			return (-1);
-		if (m->map[y[i]][x[i]] != '#' && m->map[y[i]][x[i]] != 'M')
-		{
-			overwrite_last_pos(m, i);
-			m->ghost.old_char[i] = m->map[y[i]][x[i]];
-			tputs(tgoto(tgetstr("cm", NULL), x[i], y[i]), 1, myputc);
-			m->map[y[i]][x[i]] = 'M';
-			m->ghost.x[i] = x[i];
-			m->ghost.y[i] = y[i];
-			ft_strcolor_fd("M", H_RED, 2, FALSE);
-		}
-		if (m->map[y[i]][x[i]] == 'M')
-			if (i > 0)
-				m->ghost.old_char[i] = m->ghost.old_char[i - 1];
+		overwrite_last_pos(m, i);
+		m->ghost.old_char[i] = m->map[y][x];
+		tputs(tgoto(tgetstr("cm", NULL), x, y), 1, myputc);
+		m->map[y][x] = 'M';
+		m->ghost.x[i] = x;
+		m->ghost.y[i] = y;
+		ft_strcolor_fd("M", H_RED, 2, FALSE);
 	}
 	return (0);
 }

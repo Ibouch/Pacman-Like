@@ -34,26 +34,26 @@ static void	build_map(t_map *m)
 	m->map[y] = NULL;
 }
 
-int			create_map(t_termios *term_update, t_map *m)
+int			create_map(t_env *e, t_map *m)
 {
 	int	ret;
 	int	i_time;
 
 	build_map(m);
-	print_map(m);
-	update_struct(term_update, 0);
-	if ((tcsetattr(0, TCSADRAIN, term_update)) == (-1))
+	print_map(m, e->solid);
+	update_struct(&(e->term_update), 0);
+	if ((tcsetattr(0, TCSADRAIN, &(e->term_update))) == (-1))
 		error_call_system("tcsetattr");
 	i_time = time(NULL);
 	while (42)
 	{
-		ret = play_game(m, &i_time);
+		ret = play_game(m, e->fast, &i_time);
 		if (ret == LOST_HP)
 		{
 			--(m->hp);
 			if (m->hp == 0)
 				return (GAME_OVER);
-			print_map(m);
+			print_map(m, e->solid);
 		}
 		else if (ret != 0)
 			return (ret);

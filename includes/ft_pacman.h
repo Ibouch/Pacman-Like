@@ -6,7 +6,7 @@
 /*   By: ibouchla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/04 15:56:09 by ibouchla          #+#    #+#             */
-/*   Updated: 2016/05/12 13:13:51 by ibouchla         ###   ########.fr       */
+/*   Updated: 2016/05/26 21:51:11 by ibouchla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # define LOST_HP 1
 # define LEVEL_UP 2
 # define GAME_OVER 3
-# define NB_GHOSTS 2
+# define NB_GHOSTS 4
 # define IS_LEVEL ((buf[0] > '0' && buf[0] <= max_level) && buf[1] == '\0')
 # define ESC (buf[0] == 27 && buf[1] == '\0')
 
@@ -52,7 +52,6 @@ struct					s_pacman_pos
 
 typedef struct			s_map
 {
-	t_bool				solid;
 	char				*file;
 	char				*content;
 	char				**map;
@@ -74,6 +73,8 @@ typedef struct			s_env
 	t_termios			term_update;
 	t_termios			term_default;
 	t_map				*m;
+	t_bool				solid;
+	t_bool				fast;
 	int					nb_files;
 }						t_env;
 
@@ -88,13 +89,13 @@ void					map_add(t_map **alst, char *map, char *file_name);
 void					run_pacman(t_env *e);
 int						select_level(t_env *e);
 int						verify_map(char *map);
-int						create_map(t_termios *term_update, t_map *m);
-int						play_game(t_map *m, int *i_time);
+int						create_map(t_env *e, t_map *m);
+int						play_game(t_map *m, t_bool fast, int *i_time);
 int						check_time(int *i_time);
-void					print_map(t_map *m);
+void					print_map(t_map *m, t_bool s_opt);
 int						move_pacman(t_map *m, int x, int y);
 int						ghosts_ai(t_map *m);
-int						move_ghosts(t_map *m, int x[2], int y[2]);
+int						move_ghosts(t_map *m, int x, int y, int i);
 void					update_score(t_map *m, char c);
 int						get_map_size(char *map, int type);
 int						calcul_pos(int nb_line, int obj);

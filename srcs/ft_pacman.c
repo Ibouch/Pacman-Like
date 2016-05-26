@@ -18,11 +18,24 @@ static void	print_pacman_usage(void)
 	exit(EXIT_FAILURE);
 }
 
-static void	check_solid_option(t_env *e, int ac, char **av)
+static void	check_option(t_env *e, int ac, char **av)
 {
+	int	i;
+
+	i = 0;
 	if (ac == 3)
-		(((ft_strcmp(av[2], "-s")) == 0) ? e->m->solid = TRUE
-		: print_pacman_usage());
+	{
+		if (av[2][i] == '-')
+			while (av[2][++i] != '\0')
+			{
+				if (av[2][i] == 's')
+					e->solid = TRUE;
+				else if (av[2][i] == 'f')
+					e->fast = TRUE;
+				else
+					print_pacman_usage();
+			}
+	}
 }
 
 int			main(int ac, char **av)
@@ -34,7 +47,7 @@ int			main(int ac, char **av)
 	if ((e = (t_env *)ft_memalloc(sizeof(t_env))) == NULL)
 		ft_error_system();
 	storage_map(e, av[1]);
-	check_solid_option(e, ac, av);
+	check_option(e, ac, av);
 	get_terminfo(e);
 	run_pacman(e);
 	map_lstdel(&(e->m));
