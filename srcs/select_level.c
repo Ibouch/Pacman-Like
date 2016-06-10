@@ -29,7 +29,7 @@ static void	print_level(t_map *m)
 		m = m->next;
 	}
 	ft_strcolor_fd("(ESC)", H_GREEN, 2, FALSE);
-	ft_strcolor_fd("\t\t- ", H_BLACK, 2, FALSE);
+	ft_strcolor_fd("\t       - ", H_BLACK, 2, FALSE);
 	ft_strcolor_fd("Quit the game", H_WHITE, 2, TRUE);
 }
 

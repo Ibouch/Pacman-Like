@@ -6,7 +6,7 @@
 /*   By: ibouchla <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/05/06 20:59:01 by ibouchla          #+#    #+#             */
-/*   Updated: 2016/05/12 17:30:37 by ibouchla         ###   ########.fr       */
+/*   Updated: 2016/06/10 16:45:14 by ibouchla         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static void	invalid_map(t_termios *term_default)
 {
 	restore_term_default(term_default);
 	ft_strcolor_fd("./ft_pacman: Invalid map.", H_RED, 2, TRUE);
-	ft_putendl_fd("Segmentation fault: 11", 2);
 	exit(EXIT_FAILURE);
 }
 
