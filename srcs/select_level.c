@@ -38,7 +38,7 @@ static void	print_banner(void)
 	int		fd;
 	char	buf[477];
 
-	if ((fd = open("./images/banner.pacman", O_RDONLY)) != (-1))
+	if ((fd = open("banner.pacman", O_RDONLY)) != (-1))
 	{
 		if ((read(fd, buf, 476)) == 476)
 		{
